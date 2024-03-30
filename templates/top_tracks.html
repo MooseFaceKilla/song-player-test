@@ -6,25 +6,23 @@
     <title>Top Tracks</title>
 </head>
 <body>
-    <h1>Top Tracks for {{ artist }}</h1>
-    <ul>
-        {% for track in tracks %}
-            <li>
-                <strong>{{ track['name'] }}</strong>
-                <br>
-                <audio controls>
-                    <source src="{{ track['preview_url'] }}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-            </li>
-        {% endfor %}
-    </ul>
-    <button onclick="goBack()">Go Back</button>
-    
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
+<h1>Top Tracks for {{ artist }}</h1>
+{% if image_url %}
+    <img src="{{ image_url }}" alt="Artist Image">
+{% endif %}
+<ul>
+    {% for track in tracks %}
+    <li>{{ track['name'] }}</li>
+    {% if track['preview_url'] %}
+    <audio controls>
+        <source src="{{ track['preview_url'] }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    {% endif %}
+    {% endfor %}
+</ul>
+<form action="/" method="get">
+    <button type="submit">Go Back</button>
+</form>
 </body>
 </html>
