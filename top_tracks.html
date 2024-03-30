@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Tracks</title>
+</head>
+<body>
+<h1>Top Tracks for {{ artist }}</h1>
+<ul>
+    {% for track in tracks %}
+    <li>{{ track['name'] }}</li>
+    {% endfor %}
+</ul>
+<a href="/">Go Back</a>  <!-- Add a link to go back to the home page -->
+</body>
+</html>
