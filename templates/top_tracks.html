@@ -4,68 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Top Tracks</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
-
-        a.button {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        a.button:hover {
-            background-color: #0056b3;
-        }
-
-        .artist-info {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-        }
-
-        .artist-info img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-right: 20px;
-        }
-
-        .artist-info p {
-            color: #333;
-        }
-    </style>
 </head>
 <body>
-<h1>Top Tracks for {{ artist }}</h1>
-<div class="artist-info">
-    <img src="{{ artist_image }}" alt="{{ artist }}">
-    <p>{{ artist_description }}</p>
-</div>
+{% if artist_info %}
+    <img src="{{ artist_info['image'] }}" alt="Artist Image" style="max-width: 200px;">
+    <h1>{{ artist_info['name'] }}</h1>
+    <p>{{ artist_info['description'] }}</p>
+{% else %}
+    <h1>No Artist Information Available</h1>
+{% endif %}
+<h2>Top Tracks for {{ artist }}</h2>
 <ul>
     {% for track in tracks %}
     <li>{{ track['name'] }} - <audio controls><source src="{{ track['preview_url'] }}" type="audio/mpeg"></audio></li>
     {% endfor %}
 </ul>
-<a href="/" class="button">Go Back</a>
+<a href="/">Go Back</a>  <!-- Add a link to go back to the home page -->
 </body>
 </html>
