@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Unleashed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            position: relative;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 36px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+
+        .btn:last-child {
+            margin-right: 0;
+        }
+
+        .btn:hover {
+            background-color: #555;
+        }
+
+        .go-back {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff; /* Blue background color */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-right: 10px;
+            position: absolute;
+            top: 20px; /* Position at the top */
+            left: 20px; /* Position at the left */
+        }
+
+        .go-back:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>Music Unleashed</h1>
+</header>
+<a href="/" class="btn go-back">Go Back</a>
+<div class="container">
+    <a href="/searchByArtistName" class="btn">Search by Artist</a>
+    <a href="searchBySongName.html" class="btn">Search by Song Name</a>
+    <a href="searchByAlbumName.html" class="btn">Search by Album Name</a>
+    <a href="createPlaylist.html" class="btn">Create Playlist</a>
+    <a href="viewPlaylists.html" class="btn">View Playlists</a>
+</div>
+</body>
+
+</html>
