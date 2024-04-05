@@ -4,21 +4,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Top Tracks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for mode change */
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .mode-switch {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            position: absolute;
+            top: 10px;
+            right: 10px; /* Adjusted position for top right corner */
+        }
+
+        .mode-switch input[type="checkbox"] {
+            appearance: none;
+            width: 50px;
+            height: 25px;
+            background-color: #ccc;
+            border-radius: 25px;
+            position: relative;
+            outline: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .mode-switch input[type="checkbox"]::before {
+            content: "";
+            width: 25px;
+            height: 25px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateX(0);
+            transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transition for mode switch */
+        }
+
+        .mode-switch input[type="checkbox"]:checked::before {
+            transform: translateX(25px); /* Slide to the right for dark mode */
+            background-color: #aaa; /* Grey color for slider circle in dark mode */
+        }
+
+        .mode-label {
+            margin-right: 10px;
+            color: #000; /* Black color for Light Mode text */
+        }
+
+        h1 {
+            color: #007bff;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            height: 60px;
+            border-radius: 5px;
+            background-color: #f8f9fa; /* Light gray background in light mode */
+            padding: 10px;
+        }
+
+        li:hover {
+            background-color: #e9ecef; /* Lighter gray on hover */
+        }
+
+        .audio-wrapper {
+            margin-left: 20px;
+            flex: 1;
+        }
+
+        .audio-wrapper audio {
+            width: 100%;
+        }
+
+        .song-name {
+            font-weight: bold;
+        }
+
+        .go-back-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .go-back-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1c1c1c; /* Dark background color */
+            color: #fff; /* Text color */
+        }
+
+        body.dark-mode .mode-switch input[type="checkbox"] {
+            background-color: #666; /* Dark background for switch */
+        }
+
+        body.dark-mode .mode-switch input[type="checkbox"]::before {
+            background-color: #333; /* Dark color for switch slider */
+        }
+
+        body.dark-mode .mode-switch input[type="checkbox"]:checked::before {
+            background-color: #aaa; /* Grey color for slider circle in dark mode */
+        }
+
+        body.dark-mode li {
+            background-color: #333; /* Dark background for song boxes */
+            color: #fff; /* Light text color for song names in dark mode */
+        }
+    </style>
 </head>
 <body>
-{% if artist_info %}
-    <img src="{{ artist_info['image'] }}" alt="Artist Image" style="max-width: 200px;">
-    <h1>{{ artist_info['name'] }}</h1>
-    <p>{{ artist_info['description'] }}</p>
-{% else %}
-    <h1>No Artist Information Available</h1>
-{% endif %}
-<h2>Top Tracks for {{ artist }}</h2>
+<div class="container">
+    <h1>Top Tracks for {{ artist }}</h1>
+    <div class="mode-switch">
+        <label class="mode-label" for="mode-toggle">Light Mode</label>
+        <input type="checkbox" id="mode-toggle">
+    </div>
+</div>
 <ul>
     {% for track in tracks %}
-    <li>{{ track['name'] }} - <audio controls><source src="{{ track['preview_url'] }}" type="audio/mpeg"></audio></li>
+    <li>
+        <span class="song-name">{{ track['name'] }}</span>
+        {% if track['preview_url'] %}<div class="audio-wrapper"><audio controls><source src="{{ track['preview_url'] }}" type="audio/mpeg"></audio></div>{% endif %}
+    </li>
     {% endfor %}
 </ul>
-<a href="/">Go Back</a>  <!-- Add a link to go back to the home page -->
+<a href="/searchByArtistName" class="go-back-button">Go Back to Search</a>
+
+<script>
+    const modeToggle = document.getElementById('mode-toggle');
+    const body = document.body;
+
+    modeToggle.addEventListener('change', () => {
+        body.classList.toggle('dark-mode', modeToggle.checked);
+        if (modeToggle.checked) {
+            document.querySelector('.mode-label').textContent = 'Dark Mode';
+            document.querySelector('.mode-label').style.color = '#fff'; // Dark mode text color
+            document.querySelector('.mode-switch input[type="checkbox"]::before').style.backgroundColor = '#333'; // Dark mode slider color
+        } else {
+            document.querySelector('.mode-label').textContent = 'Light Mode';
+            document.querySelector('.mode-label').style.color = '#000'; // Light mode text color
+            document.querySelector('.mode-switch input[type="checkbox"]::before').style.backgroundColor = '#fff'; // Light mode slider color
+        }
+    });
+</script>
 </body>
 </html>
