@@ -47,7 +47,7 @@ def search():
         return render_template('top_tracks.html', artist=correct_artist_name, tracks=top_tracks)
     else:
         error_message = f"No artist found with the name '{artist_name}'."
-        return render_template('searchByArtistName.html', error=error_message)
+        return render_template('searchbyartistname.html', error=error_message)
 
 
 @app.route('/hyperlinks')
@@ -55,9 +55,9 @@ def hyperlinks():
     return render_template('hyperlinks.html')
 
 
-@app.route('/searchByArtistName')
+@app.route('/searchbyartistname')
 def search_by_artist_name():
-    return render_template('searchByArtistName.html')
+    return render_template('searchbyartistname.html')
 
 
 if __name__ == '__main__':
