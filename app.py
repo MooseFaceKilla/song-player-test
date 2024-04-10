@@ -56,7 +56,7 @@ def hyperlinks():
 
 
 @app.route('/searchByArtistName')
-def searchByArtistName():
+def search_by_artist_name():
     return render_template('searchByArtistName.html')
 
 
