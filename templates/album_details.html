@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .album-details {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .album-image {
+            width: 200px;
+            height: 200px;
+            margin-right: 20px;
+        }
+
+        .album-info {
+            flex-grow: 1;
+        }
+
+        .go-back-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .go-back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Album Details</h1>
+<div class="album-details">
+    <img src="{{ album_details['image_url'] }}" alt="Album Cover" class="album-image">
+    <div class="album-info">
+        <h2>{{ album_details['name'] }}</h2>
+        <p>Artists: {{ album_details['artists'] }}</p>
+        <p>Release Date: {{ album_details['release_date'] }}</p>
+    </div>
+</div>
+<a href="javascript:history.back()" class="go-back-button">Back</a>
+</body>
+
+</html>
