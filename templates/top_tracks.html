@@ -66,6 +66,7 @@
             color: #007bff;
             font-size: 28px;
             margin-bottom: 20px;
+            margin-top: 0; /* Added margin top */
         }
 
         ul {
@@ -109,7 +110,7 @@
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
-            margin-top: 20px;
+            margin-bottom: 20px; /* Moved margin from top to bottom */
             transition: background-color 0.3s ease;
         }
 
@@ -142,6 +143,8 @@
     </style>
 </head>
 <body>
+<!-- Moved the Go Back button above the title -->
+<a href="/searchbyalbumname" class="go-back-button">Back</a>
 <div class="container">
     <h1>Top Tracks for {{ artist }}</h1>
     <div class="mode-switch">
@@ -157,9 +160,6 @@
     </li>
     {% endfor %}
 </ul>
-
-<!-- Back button -->
-<a href="/hyperlinks" class="go-back-button">Back to Hyperlinks</a>
 
 <script>
     const modeToggle = document.getElementById('mode-toggle');
