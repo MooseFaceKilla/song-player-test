@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px; /* Added margin to create space below the title */
+        }
+
+        .album-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .album-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .album-image {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        .album-details {
+            flex-grow: 1;
+        }
+
+        .album-button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .album-button:hover {
+            background-color: #0056b3;
+        }
+
+        .go-back-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .go-back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+<a href="/searchbyalbumname" class="go-back-button">Go Back</a>
+<h1 style="margin-top: 50px;">Top Albums</h1> <!-- Added margin-top to move the title down -->
+<ul class="album-list">
+    {% for album in albums %}
+    <li class="album-item">
+        <div>
+            <img src="{{ album['image_url'] }}" alt="Album Cover" class="album-image">
+        </div>
+        <div class="album-details">
+            <h3>{{ album['name'] }}</h3>
+            <p>{{ album['artists'] }}</p>
+            <p>{{ album['release_date'] }}</p>
+            <a href="/album-details/{{ album['id'] }}" class="album-button">View Album Details</a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+
+</html>
