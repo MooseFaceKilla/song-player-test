@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #007bff;
+            font-size: 28px;
+        }
+        .user-info {
+            margin-bottom: 20px;
+        }
+        .playlist-item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>User Profile</h1>
+<div class="user-info">
+    <p><strong>User ID:</strong> {{ user_info['id'] }}</p>
+    <p><strong>Display Name:</strong> {{ user_info['display_name'] }}</p>
+    <p><strong>Email:</strong> {{ user_info['email'] }}</p>
+    <p><strong>Country:</strong> {{ user_info['country'] }}</p>
+    <img src="{{ user_info['images'][0]['url'] }}" alt="User Image" style="width: 100px; height: 100px;">
+</div>
+<h2>Playlists</h2>
+<ul>
+    {% for playlist in playlists['items'] %}
+    <li class="playlist-item">
+        <strong>{{ playlist['name'] }}</strong>
+        <p>{{ playlist['description'] }}</p>
+        <p><strong>Tracks:</strong> {{ playlist['tracks']['total'] }}</p>
+        <p><strong>Owner:</strong> {{ playlist['owner']['display_name'] }}</p>
+        <img src="{{ playlist['images'][0]['url'] }}" alt="Playlist Cover" style="width: 100px; height: 100px;">
+    </li>
+    {% endfor %}
+</ul>
+<a href="/logout">Logout</a>
+</body>
+</html>
