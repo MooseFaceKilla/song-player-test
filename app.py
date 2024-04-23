@@ -1,10 +1,11 @@
 import requests
-from flask import Flask, request, render_template
+from flask import Flask, request, redirect, url_for, session, render_template
 from dotenv import load_dotenv
 import os
 import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 from waitress import serve
+from datetime import datetime
 
 # Load environment variables from .env file
 load_dotenv()
@@ -12,8 +13,15 @@ load_dotenv()
 # Accessing environment variables
 client_id = os.getenv('CLIENT_ID')
 client_secret = os.getenv('CLIENT_SECRET')
+redirect_uri = os.getenv('REDIRECT_URI')
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
+
+# Spotify OAuth authentication
+sp_oauth = SpotifyOAuth(client_id=client_id, client_secret=client_secret,
+                        redirect_uri=redirect_uri,
+                        scope='playlist-modify-public playlist-modify-private user-library-modify')
 
 # Spotify API authentication
 client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
@@ -135,6 +143,59 @@ def searchbysongname():
 @app.route('/searchbyalbumname')
 def searchbyalbumname():
     return render_template('searchByAlbumName.html')
+
+
+# above is calls to songs and artist side of API, below is an attempt to allow the user to
+# log into their spotify account and have the app edit their liked songs and playlists etc etc... 😍😍
+
+
+@app.route('/login')
+def login():
+    auth_url = sp_oauth.get_authorize_url()
+    return redirect(auth_url)
+
+
+@app.route('/callback')
+def callback():
+    code = request.args.get('code')
+    token_info = sp_oauth.get_access_token(code)
+    session['token_info'] = token_info
+    return redirect(url_for('profile'))
+
+
+def is_token_valid(token_info):
+    if 'expires_at' in token_info:
+        expires_at = token_info['expires_at']
+        # Convert expires_at to datetime object
+        expires_at_dt = datetime.fromtimestamp(expires_at)
+        # Check if the token is expired (assuming expiration is in UTC)
+        if datetime.utcnow() < expires_at_dt:
+            return True
+    return False
+
+
+@app.route('/profile')
+def profile():
+    if 'token_info' not in session:
+        return redirect(url_for('login'))
+
+    token_info = session['token_info']
+    if not is_token_valid(token_info):
+        # If the token is expired, refresh it
+        token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
+        session['token_info'] = token_info
+
+    sp = spotipy.Spotify(auth=token_info['access_token'])
+    user_info = sp.current_user()
+    playlists = sp.current_user_playlists(limit=10)
+
+    return render_template('profile.html', user_info=user_info, playlists=playlists)
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
