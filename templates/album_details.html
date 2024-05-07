@@ -47,6 +47,22 @@
         .go-back-button:hover {
             background-color: #0056b3;
         }
+
+        .spotify-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1db954; /* Spotify green color */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            border: 2px solid #1db954; /* Match background color */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .spotify-link:hover {
+            background-color: #fff;
+            color: #1db954;
+        }
     </style>
 </head>
 
@@ -58,9 +74,11 @@
         <h2>{{ album_details['name'] }}</h2>
         <p>Artists: {{ album_details['artists'] }}</p>
         <p>Release Date: {{ album_details['release_date'] }}</p>
+
     </div>
 </div>
 <a href="javascript:history.back()" class="go-back-button">Back</a>
+<a href="https://open.spotify.com/album/{{ album_details['id'] }}" target="_blank" class="spotify-link">Open in Spotify</a>
 </body>
 
 </html>
