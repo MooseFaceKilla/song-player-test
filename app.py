@@ -109,14 +109,19 @@ def get_album_details(album_id):
     album = sp.album(album_id)
     if album:
         album_details = {
+            'id': album['id'],  # Include the album ID in the album details
             'name': album['name'],
             'artists': ', '.join([artist['name'] for artist in album['artists']]),
             'release_date': album['release_date'],
-            'image_url': album['images'][0]['url'] if album['images'] else None
+            'image_url': album['images'][0]['url'] if album['images'] else None,
+
         }
         return album_details
     else:
         return None
+
+
+
 
 
 # Define route for home page
