@@ -7,14 +7,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Album Details</title>
     <style>
+        /* Default light mode styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
             padding: 20px;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Switch styles */
+        .switch-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .switch-label {
+            margin-right: 10px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(16px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
         }
 
         h1 {
-            color: #333;
+            color: inherit; /* Inherit color from body to maintain readability in dark mode */
+            transition: color 0.3s ease; /* Smooth color transition */
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
         }
 
         .album-details {
@@ -34,14 +116,14 @@
         }
 
         .go-back-button {
-            display: inline-block;
             padding: 8px 16px;
             background-color: #007bff;
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 130px;
+            transition: background-color 0.3s ease;
         }
 
         .go-back-button:hover {
@@ -49,36 +131,65 @@
         }
 
         .spotify-link {
-            display: inline-block;
-            padding: 10px 20px;
+            padding: 8px 16px;
             background-color: #1db954; /* Spotify green color */
             color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             text-decoration: none;
-            border-radius: 30px;
-            border: 2px solid #1db954; /* Match background color */
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease;
+            margin-top: 40px;
         }
 
         .spotify-link:hover {
-            background-color: #fff;
-            color: #1db954;
+            background-color: #148c59; /* Darker shade of green on hover */
         }
     </style>
 </head>
 
 <body>
-<h1>Album Details</h1>
+<div class="switch-container">
+    <span class="switch-label">Dark Mode:</span>
+    <label class="switch">
+        <input type="checkbox" id="modeSwitch">
+        <span class="slider round"></span>
+    </label>
+</div>
+<div class="container">
+    <h1>Album Details</h1>
+</div>
 <div class="album-details">
     <img src="{{ album_details['image_url'] }}" alt="Album Cover" class="album-image">
     <div class="album-info">
         <h2>{{ album_details['name'] }}</h2>
         <p>Artists: {{ album_details['artists'] }}</p>
         <p>Release Date: {{ album_details['release_date'] }}</p>
-
     </div>
 </div>
 <a href="javascript:history.back()" class="go-back-button">Back</a>
 <a href="https://open.spotify.com/album/{{ album_details['id'] }}" target="_blank" class="spotify-link">Open in Spotify</a>
+
+<script>
+    // Function to toggle dark mode
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    }
+
+    // Check and set initial dark mode preference
+    const userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedTheme = localStorage.getItem('theme');
+    const isDarkMode = storedTheme === 'dark' || (!storedTheme && userPrefersDark);
+    document.body.classList.toggle('dark-mode', isDarkMode);
+
+    // Add event listener for dark mode switch
+    document.getElementById('modeSwitch').addEventListener('change', function() {
+        toggleDarkMode();
+    });
+</script>
+
 </body>
 
 </html>
