@@ -7,39 +7,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Album Results</title>
     <style>
+        /* Default light mode styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
             padding: 20px;
-        }
-
-        h1 {
+            background-color: #f0f0f0;
             color: #333;
-            margin-bottom: 20px; /* Added margin to create space below the title */
+            position: relative; /* Ensure relative positioning for button alignment */
         }
 
-        .album-list {
-            list-style-type: none;
-            padding: 0;
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
         }
 
-        .album-item {
+        /* Switch styles */
+        .switch-container {
+            position: fixed;
+            top: 10px;
+            right: 10px;
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
         }
 
+        .switch-label {
+            margin-right: 10px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(16px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* Adjusted album art size */
         .album-image {
             width: 100px;
             height: 100px;
             margin-right: 20px;
+            float: left; /* Ensure album art floats left */
         }
 
-        .album-details {
-            flex-grow: 1;
-        }
-
-        .album-button {
+        /* Button styles */
+        .album-button,
+        .go-back-button {
             padding: 8px 16px;
             background-color: #007bff;
             color: #fff;
@@ -47,25 +106,12 @@
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
+            transition: background-color 0.3s ease;
+            clear: both; /* Clear floating elements */
+            margin-top: 10px; /* Adjust top margin for spacing */
         }
 
-        .album-button:hover {
-            background-color: #0056b3;
-        }
-
-        .go-back-button {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
+        .album-button:hover,
         .go-back-button:hover {
             background-color: #0056b3;
         }
@@ -73,8 +119,15 @@
 </head>
 
 <body>
+<div class="switch-container">
+    <span class="switch-label">Dark Mode:</span>
+    <label class="switch">
+        <input type="checkbox" id="modeSwitch">
+        <span class="slider round"></span>
+    </label>
+</div>
 <a href="/searchbyalbumname" class="go-back-button">Go Back</a>
-<h1 style="margin-top: 50px;">Top Albums</h1> <!-- Added margin-top to move the title down -->
+<h1 style="margin-top: 50px;">Top Albums</h1>
 <ul class="album-list">
     {% for album in albums %}
     <li class="album-item">
@@ -90,6 +143,29 @@
     </li>
     {% endfor %}
 </ul>
+
+<script>
+    // Check if there is a stored theme preference
+    const storedTheme = localStorage.getItem('theme');
+
+    // If there's a stored theme, set the switch accordingly
+    if (storedTheme === 'dark') {
+        document.getElementById('modeSwitch').checked = true;
+        document.body.classList.add('dark-mode');
+    }
+
+    // Function to toggle theme and store preference in localStorage
+    function toggleTheme() {
+        const isDark = document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    // Event listener for the switch
+    document.getElementById('modeSwitch').addEventListener('change', function() {
+        toggleTheme();
+    });
+</script>
+
 </body>
 
 </html>
