@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artist Lookup</title>
+    <title>Search by Artist Name</title>
     <style>
+        /* Default light mode styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             padding: 20px;
+            color: #333;
+            position: relative;
         }
 
         h1 {
-            color: #333;
+            color: inherit; /* Inherit color from body */
         }
 
         form {
@@ -29,6 +34,8 @@
             margin-right: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            background-color: inherit; /* Inherit background color */
+            color: inherit; /* Inherit text color */
         }
 
         button[type="submit"] {
@@ -59,15 +66,139 @@
         .go-back-button:hover {
             background-color: #0056b3;
         }
+
+        /* Switch styles */
+        .switch-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            z-index: 1000; /* Ensure switch is above other content */
+        }
+
+        .switch-label {
+            margin-right: 10px;
+            color: #333; /* Default text color for switch label */
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(16px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .switch-label.dark-mode {
+            color: #fff; /* Text color for switch label in dark mode */
+        }
+
+        .slider.dark-mode {
+            background-color: #007bff; /* Blue background color for switch in dark mode */
+        }
+
+        .slider.dark-mode:before {
+            background-color: white; /* White circle color for switch in dark mode */
+        }
+
+        input.dark-mode:checked + .slider {
+            background-color: #0056b3; /* Darker blue color for checked switch in dark mode */
+        }
+
+        input.dark-mode:checked + .slider:before {
+            transform: translateX(16px); /* Adjust position for checked switch in dark mode */
+        }
     </style>
 </head>
+
 <body>
-<h1>Enter Artist Name</h1>
+<div class="switch-container">
+    <span class="switch-label">Dark Mode:</span>
+    <label class="switch">
+        <input type="checkbox" id="modeSwitch">
+        <span class="slider round"></span>
+    </label>
+</div>
+<h1>Search by Artist Name</h1>
 <form method="POST" action="/search">
     <label for="artist_name">Artist Name:</label>
     <input type="text" id="artist_name" name="artist_name" required>
     <button type="submit">Search</button>
 </form>
-<a href="/hyperlinks" class="go-back-button">Back </a>
+<a href="/hyperlinks" class="go-back-button">Back</a>
+
+<script>
+    // Check if there is a stored theme preference
+    const storedTheme = localStorage.getItem('theme');
+
+    // If there's a stored theme, set the theme accordingly
+    if (storedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+
+    // Function to toggle theme and store preference in localStorage
+    function toggleTheme() {
+        const isDark = document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    // Event listener for the switch
+    document.getElementById('modeSwitch').addEventListener('change', function() {
+        toggleTheme();
+    });
+</script>
 </body>
+
 </html>
