@@ -1,72 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Top Tracks</title>
     <style>
+        /* Default light mode styles */
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for mode change */
-        }
-
-        .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-        }
-
-        .mode-switch {
-            display: flex;
-            align-items: center;
-            color: #fff;
-            position: absolute;
-            top: 10px;
-            right: 10px; /* Adjusted position for top right corner */
-        }
-
-        .mode-switch input[type="checkbox"] {
-            appearance: none;
-            width: 50px;
-            height: 25px;
-            background-color: #ccc;
-            border-radius: 25px;
-            position: relative;
-            outline: none;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-
-        .mode-switch input[type="checkbox"]::before {
-            content: "";
-            width: 25px;
-            height: 25px;
-            background-color: #fff;
-            border-radius: 50%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: translateX(0);
-            transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transition for mode switch */
-        }
-
-        .mode-switch input[type="checkbox"]:checked::before {
-            transform: translateX(25px); /* Slide to the right for dark mode */
-            background-color: #aaa; /* Grey color for slider circle in dark mode */
-        }
-
-        .mode-label {
-            margin-right: 10px;
-            color: #000; /* Black color for Light Mode text */
+            color: #333; /* Default text color */
+            background-color: #f0f0f0;
+            position: relative; /* Ensure proper positioning of switch */
         }
 
         h1 {
-            color: #007bff;
+            color: #007bff; /* Blue color for headings */
             font-size: 28px;
             margin-bottom: 20px;
-            margin-top: 0; /* Added margin top */
+            margin-top: 0;
         }
 
         ul {
@@ -80,12 +34,12 @@
             align-items: center;
             height: 60px;
             border-radius: 5px;
-            background-color: #f8f9fa; /* Light gray background in light mode */
+            background-color: #f8f9fa;
             padding: 10px;
         }
 
         li:hover {
-            background-color: #e9ecef; /* Lighter gray on hover */
+            background-color: #e9ecef;
         }
 
         .audio-wrapper {
@@ -99,6 +53,7 @@
 
         .song-name {
             font-weight: bold;
+            color: inherit; /* Inherit text color */
         }
 
         .go-back-button {
@@ -110,7 +65,7 @@
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
-            margin-bottom: 20px; /* Moved margin from top to bottom */
+            margin-bottom: 20px;
             transition: background-color 0.3s ease;
         }
 
@@ -120,63 +75,169 @@
 
         /* Dark mode styles */
         body.dark-mode {
-            background-color: #1c1c1c; /* Dark background color */
-            color: #fff; /* Text color */
+            background-color: #333;
+            color: #fff; /* White text color in dark mode */
         }
 
-        body.dark-mode .mode-switch input[type="checkbox"] {
-            background-color: #666; /* Dark background for switch */
+        h1.dark-mode {
+            color: #007bff; /* Blue color for headings in dark mode */
         }
 
-        body.dark-mode .mode-switch input[type="checkbox"]::before {
-            background-color: #333; /* Dark color for switch slider */
+        .go-back-button.dark-mode {
+            background-color: #007bff;
         }
 
-        body.dark-mode .mode-switch input[type="checkbox"]:checked::before {
-            background-color: #aaa; /* Grey color for slider circle in dark mode */
+        ul.dark-mode {
+            background-color: #444; /* Darker background color for list items */
         }
 
-        body.dark-mode li {
-            background-color: #333; /* Dark background for song boxes */
-            color: #fff; /* Light text color for song names in dark mode */
+        li.dark-mode {
+            background-color: #555; /* Darker background color for list items */
+        }
+
+        li.dark-mode:hover {
+            background-color: #666; /* Darker background color on hover for list items */
+        }
+
+        .song-name.dark-mode {
+            color: #fff; /* White text color for song names in dark mode */
+        }
+
+        .audio-wrapper.dark-mode {
+            border: 1px solid #fff; /* White border for audio wrapper in dark mode */
+        }
+
+        /* Switch styles */
+        .switch-container {
+            position: fixed;
+            top: 10px;
+            right: 10px; /* Adjusted to top right corner */
+            display: flex;
+            align-items: center;
+            z-index: 1000; /* Ensure switch is above other content */
+        }
+
+        .switch-label {
+            margin-right: 10px;
+            color: #333; /* Default text color for switch label */
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(16px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
         }
     </style>
 </head>
+
 <body>
-<!-- Moved the Go Back button above the title -->
+<div class="switch-container">
+    <span class="switch-label">Dark Mode:</span>
+    <label class="switch">
+        <input type="checkbox" id="modeSwitch">
+        <span class="slider round"></span>
+    </label>
+</div>
 <a href="javascript:history.back()" class="go-back-button">Back</a>
 <div class="container">
     <h1>Top Tracks for {{ artist }}</h1>
-    <div class="mode-switch">
-        <label class="mode-label" for="mode-toggle">Light Mode</label>
-        <input type="checkbox" id="mode-toggle">
-    </div>
 </div>
 <ul>
     {% for track in tracks %}
     <li>
         <span class="song-name">{{ track['name'] }}</span>
-        {% if track['preview_url'] %}<div class="audio-wrapper"><audio controls><source src="{{ track['preview_url'] }}" type="audio/mpeg"></audio></div>{% endif %}
+        {% if track['preview_url'] %}
+        <div class="audio-wrapper">
+            <audio controls>
+                <source src="{{ track['preview_url'] }}" type="audio/mpeg">
+            </audio>
+        </div>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>
 
 <script>
-    const modeToggle = document.getElementById('mode-toggle');
-    const body = document.body;
+    // Function to toggle dark mode
+    function toggleDarkMode(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+        document.querySelector('.go-back-button').classList.toggle('dark-mode', isDark);
+        document.querySelector('h1').classList.toggle('dark-mode', isDark);
+        document.querySelector('ul').classList.toggle('dark-mode', isDark);
+        document.querySelectorAll('li').forEach(item => {
+            item.classList.toggle('dark-mode', isDark);
+        });
+        document.querySelectorAll('.song-name').forEach(item => {
+            item.classList.toggle('dark-mode', isDark);
+        });
+        document.querySelectorAll('.audio-wrapper').forEach(item => {
+            item.classList.toggle('dark-mode', isDark);
+        });
 
-    modeToggle.addEventListener('change', () => {
-        body.classList.toggle('dark-mode', modeToggle.checked);
-        if (modeToggle.checked) {
-            document.querySelector('.mode-label').textContent = 'Dark Mode';
-            document.querySelector('.mode-label').style.color = '#fff'; // Dark mode text color
-            document.querySelector('.mode-switch input[type="checkbox"]::before').style.backgroundColor = '#333'; // Dark mode slider color
-        } else {
-            document.querySelector('.mode-label').textContent = 'Light Mode';
-            document.querySelector('.mode-label').style.color = '#000'; // Light mode text color
-            document.querySelector('.mode-switch input[type="checkbox"]::before').style.backgroundColor = '#fff'; // Light mode slider color
-        }
+        // Update the switch state
+        document.getElementById('modeSwitch').checked = isDark;
+    }
+
+    // Check and set initial dark mode preference
+    const userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedTheme = localStorage.getItem('theme');
+    const isDarkMode = storedTheme === 'dark' || (!storedTheme && userPrefersDark);
+    toggleDarkMode(isDarkMode);
+
+    // Event listener for the switch
+    document.getElementById('modeSwitch').addEventListener('change', function() {
+        const isDark = this.checked;
+        toggleDarkMode(isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
     });
 </script>
 </body>
+
 </html>
